@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatelessWidget {
   startTimer() async {
@@ -11,7 +10,7 @@ class SplashScreen extends StatelessWidget {
   }
 
   void navigatePage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //SharedPreferences prefs = await SharedPreferences.getInstance();
     Get.offNamed('/feedsView');
   }
 

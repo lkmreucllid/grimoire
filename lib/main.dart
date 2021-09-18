@@ -29,11 +29,29 @@ class _MyHomePageState extends State<MyApp> {
             fontSize: 30,
             color: Color.fromARGB(250, 19, 45, 64),
           ),
+          headline2: TextStyle(
+            fontFamily: "Poppins",
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
+            color: Colors.white60,
+          ),
+          headline5: TextStyle(
+            fontFamily: "Poppins",
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
+            color: Colors.white54,
+          ),
+          headline6: TextStyle(
+            fontFamily: "Poppins",
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+            color: Colors.white54,
+          ),
         ),
       ),
       getPages: Routers.routes,
       //initialRoute: '/splashView',
-      initialRoute: '/selectFeedView',
+      initialRoute: '/feedsView',
     );
   }
 }

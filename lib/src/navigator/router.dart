@@ -1,4 +1,5 @@
 import 'package:flutter_medium/src/screens/my_feeds.dart';
+import 'package:flutter_medium/src/screens/open_feed.dart';
 import 'package:get/get.dart';
 import 'package:flutter_medium/splash_screen.dart';
 
@@ -14,7 +15,7 @@ class Routers {
     ),
     GetPage(
       name: '/selectFeedView',
-      page: () => MyFeeds(),
+      page: () => OpenFeed(),
     ),
   ];
 }
