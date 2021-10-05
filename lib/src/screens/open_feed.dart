@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_medium/src/utils/app_colors.dart';
 
-class OpenFeed extends StatelessWidget {
+class OpenFeed extends StatefulWidget {
+  final feedId;
+
+  const OpenFeed({Key key, this.feedId}) : super(key: key);
+
+  @override
+  _OpenFeedState createState() => _OpenFeedState();
+}
+
+class _OpenFeedState extends State<OpenFeed> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.primaryColorBlue,
+    return Scaffold(
+      body: Center(
+        child: Text(widget.feedId),
+      ),
     );
   }
 }

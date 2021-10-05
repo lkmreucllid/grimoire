@@ -1,3 +1,7 @@
+import 'package:flutter_medium/src/authentication/login_screen.dart';
+import 'package:flutter_medium/src/authentication/signup_screen.dart';
+import 'package:flutter_medium/src/bindings/login_binding.dart';
+import 'package:flutter_medium/src/screens/create_feed.dart';
 import 'package:flutter_medium/src/screens/my_feeds.dart';
 import 'package:flutter_medium/src/screens/open_feed.dart';
 import 'package:get/get.dart';
@@ -16,6 +20,19 @@ class Routers {
     GetPage(
       name: '/selectFeedView',
       page: () => OpenFeed(),
+    ),
+    GetPage(
+      name: '/loginView',
+      page: () => LoginScreen(),
+      binding: LoginBinding(),
+    ),
+    GetPage(
+      name: '/signUpView',
+      page: () => SignUpScreen(),
+    ),
+    GetPage(
+      name: '/createFeed',
+      page: () => CreateFeed(),
     ),
   ];
 }

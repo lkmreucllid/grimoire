@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CreatePost extends StatelessWidget {
+class CreateFeed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container();

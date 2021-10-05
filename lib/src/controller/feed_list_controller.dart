@@ -5,6 +5,8 @@ import 'package:flutter_medium/src/provider/top_feeds_provider.dart';
 class FeedListController extends GetxController {
   FeedsModel feedsModel;
   RxList<FeedsList> feedList = <FeedsList>[].obs;
+  String str = '';
+  RxBool isLoading = false.obs;
 
   @override
   void onInit() {
@@ -17,17 +19,32 @@ class FeedListController extends GetxController {
     super.onClose();
   }
 
+  void onItemClicked(String categorySelectedStr) {
+    str = categorySelectedStr;
+    apiGetFeedsList();
+  }
+
   Future apiGetFeedsList() async {
+    isLoading.value = true;
     TopFeedsProvider topFeeds = new TopFeedsProvider();
 
     topFeeds
-        .getTopFeeds("https://my-medium-app.herokuapp.com/post")
+        .getTopFeeds("https://my-medium-app.herokuapp.com/post?category=$str")
         .then((value) {
       if (value.body['sucess'] == true) {
-        feedsModel = FeedsModel.fromJson(value.body);
-        // print(feedsModel.data[1].feedId);
-        feedList.value = feedsModel.data;
-        update();
+        if (value.body['message'] == 'Posts found') {
+          Get.back();
+          isLoading.value = false;
+          feedsModel = FeedsModel.fromJson(value.body);
+
+          feedList.value = feedsModel.data;
+          update();
+        } else if (value.body['message'] == 'No Posts found') {
+          isLoading.value = false;
+
+          feedList = <FeedsList>[].obs;
+          update();
+        }
       }
     });
   }

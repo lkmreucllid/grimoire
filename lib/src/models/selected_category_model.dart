@@ -1,96 +1,59 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+class SelectCategoryModel {
+  bool success;
+  String message;
+  List<SelectedCategoryList> data;
 
-List demoSelectCategory = [
-  SelectFeedsModel(
-    img: Icons.whatshot_sharp,
-    name: "Popular",
-  ),
-  SelectFeedsModel(
-    img: Icons.follow_the_signs_outlined,
-    name: "Travel",
-  ),
-  SelectFeedsModel(
-    img: Icons.brush,
-    name: "Art",
-  ),
-  SelectFeedsModel(
-    img: Icons.flatware,
-    name: "Food",
-  ),
-  SelectFeedsModel(
-    img: Icons.more_vert,
-    name: "More",
-  ),
-  SelectFeedsModel(
-    img: Icons.more_vert,
-    name: "More",
-  ),
-  SelectFeedsModel(
-    img: Icons.more_vert,
-    name: "More",
-  ),
-  SelectFeedsModel(
-    img: Icons.whatshot_sharp,
-    name: "Popular",
-  ),
-  SelectFeedsModel(
-    img: Icons.follow_the_signs_outlined,
-    name: "Travel",
-  ),
-  SelectFeedsModel(
-    img: Icons.brush,
-    name: "Art",
-  ),
-  SelectFeedsModel(
-    img: Icons.flatware,
-    name: "Food",
-  ),
-  SelectFeedsModel(
-    img: Icons.more_vert,
-    name: "More",
-  ),
-  SelectFeedsModel(
-    img: Icons.more_vert,
-    name: "More",
-  ),
-  SelectFeedsModel(
-    img: Icons.more_vert,
-    name: "More",
-  ),
-  SelectFeedsModel(
-    img: Icons.whatshot_sharp,
-    name: "Popular",
-  ),
-  SelectFeedsModel(
-    img: Icons.follow_the_signs_outlined,
-    name: "Travel",
-  ),
-  SelectFeedsModel(
-    img: Icons.brush,
-    name: "Art",
-  ),
-  SelectFeedsModel(
-    img: Icons.flatware,
-    name: "Food",
-  ),
-  SelectFeedsModel(
-    img: Icons.more_vert,
-    name: "More",
-  ),
-  SelectFeedsModel(
-    img: Icons.more_vert,
-    name: "More",
-  ),
-  SelectFeedsModel(
-    img: Icons.more_vert,
-    name: "More",
-  ),
-];
+  SelectCategoryModel({
+    this.success,
+    this.message,
+    this.data,
+  });
 
-class SelectFeedsModel {
-  IconData img;
+  SelectCategoryModel.fromJson(Map<String, dynamic> json) {
+    success = json['sucess'];
+    message = json['message'];
+    if (json['data'] != null) {
+      data = [];
+      json['data'].forEach((v) {
+        data.add(new SelectedCategoryList.fromJson(v));
+        data.add(new SelectedCategoryList.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['success'] = this.success;
+    data['message'] = this.message;
+    if (this.data != null) {
+      data['data'] = this.data.map((e) => e.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class SelectedCategoryList {
   String name;
+  String img;
+  String id;
 
-  SelectFeedsModel({this.img, this.name});
+  SelectedCategoryList({
+    this.name,
+    this.img,
+    this.id,
+  });
+
+  SelectedCategoryList.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    img = json['url'];
+    id = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['img'] = this.img;
+    data['id'] = this.id;
+    return data;
+  }
 }

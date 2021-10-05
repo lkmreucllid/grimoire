@@ -72,7 +72,7 @@ class FeedsList {
     updatedDate = json['updatedDate'];
   }
 
-  toJson() {
+  Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['feedId'] = this.feedId;
     data['likes'] = this.likes;
@@ -85,5 +85,6 @@ class FeedsList {
     data['userName'] = this.userName;
     data['createdDate'] = this.createdDate;
     data['updatedDate'] = this.updatedDate;
+    return data;
   }
 }

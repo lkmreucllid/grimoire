@@ -1,13 +1,13 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_medium/src/authentication/login_screen.dart';
 import 'package:flutter_medium/src/clippers/line_clipper.dart';
 import 'package:flutter_medium/src/controller/feed_list_controller.dart';
+import 'package:flutter_medium/src/controller/selected_category_controller.dart';
 import 'package:flutter_medium/src/utils/app_colors.dart';
 import 'package:flutter_medium/src/utils/utility.dart';
 import 'package:get/get.dart';
-import 'package:flutter_medium/src/models/selected_category_model.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'open_feed.dart';
 
 class MyFeeds extends StatefulWidget {
@@ -19,61 +19,17 @@ class _MyFeedsState extends State<MyFeeds> {
   int _selectedFeedIndex = 0;
 
   final FeedListController _feedListController = Get.put(FeedListController());
+  final SelectedCategoryController _selectedCategoryController =
+      Get.put(SelectedCategoryController());
+
   startTimer() async {
-    var _duration = new Duration(seconds: 5);
+    var _duration = new Duration(seconds: 2);
     return new Timer(_duration, navigatePage);
   }
 
   void navigatePage() async {
-    //SharedPreferences prefs = await SharedPreferences.getInstance();
-    Get.to(() => OpenFeed());
-  }
-
-  Widget _buildSelectedFeedRow(int index) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedFeedIndex = index;
-        });
-      },
-      child: Container(
-        width: Get.width * 0.17,
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  color: _selectedFeedIndex == index
-                      ? Colors.black
-                      : Colors.black12),
-              padding: EdgeInsets.all(8.0),
-              child: Icon(
-                demoSelectCategory[index].img,
-                color:
-                    _selectedFeedIndex == index ? Colors.white : Colors.black,
-              ),
-            ),
-            Container(
-              width: Get.width * 0.20,
-              child: Center(
-                child: Text(
-                  demoSelectCategory[index].name,
-                  softWrap: true,
-                  style: TextStyle(
-                    color: _selectedFeedIndex == index
-                        ? Colors.black
-                        : Colors.black54,
-                    fontFamily: "Poppins",
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    //Get.to(() => OpenFeed());
+    Get.to(() => LoginScreen());
   }
 
   @override
@@ -143,25 +99,95 @@ class _MyFeedsState extends State<MyFeeds> {
                       height: 10.0,
                     ),
                     // Selected Feeds are shown in row Here.
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: demoSelectCategory
-                              .asMap()
-                              .entries
-                              .map((MapEntry map) =>
-                                  _buildSelectedFeedRow(map.key))
-                              .toList(),
+                    Container(
+                      width: Get.size.width,
+                      height: 90,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: GetBuilder<SelectedCategoryController>(
+                          builder: (value) => Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 150,
+                                width: Get.size.width,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: _selectedCategoryController
+                                      .selectedCategoryList.length,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(2.0),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            _feedListController.onItemClicked(
+                                                _selectedCategoryController
+                                                    .selectedCategoryList[index]
+                                                    .id);
+                                            _selectedFeedIndex = index;
+                                            _feedListController
+                                                .isLoading.value = true;
+                                          });
+                                        },
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(25),
+                                                  color: _selectedFeedIndex ==
+                                                          index
+                                                      ? Colors.red
+                                                      : Colors.black12),
+                                              child: IconButton(
+                                                //onPressed: () {},
+                                                icon: Image.network(
+                                                    '${_selectedCategoryController.selectedCategoryList[index].img}'),
+                                                color:
+                                                    _selectedFeedIndex == index
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                              ),
+                                            ),
+                                            Container(
+                                              height: 30,
+                                              width: 90,
+                                              child: Center(
+                                                child: Text(
+                                                  _selectedCategoryController
+                                                      .selectedCategoryList[
+                                                          index]
+                                                      .name,
+                                                  textAlign: TextAlign.center,
+                                                  softWrap: true,
+                                                  style: TextStyle(
+                                                    color: _selectedFeedIndex ==
+                                                            index
+                                                        ? Colors.black
+                                                        : Colors.black54,
+                                                    fontFamily: "Poppins",
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 10,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                     SizedBox(
-                      height: 10.0,
+                      height: 5.0,
                     ),
                     Column(
                       children: [
@@ -197,140 +223,139 @@ class _MyFeedsState extends State<MyFeeds> {
                                               .headline2,
                                         ),
                                       ),
-                                      GetBuilder(
+                                      GetBuilder<FeedListController>(
                                         init: FeedListController(),
-                                        builder: (value) =>
-                                            _feedListController.feedList.isEmpty
-                                                ? Center(
-                                                    child: Container(
-                                                    height: 26,
-                                                    width: 26,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      backgroundColor:
-                                                          Colors.white,
-                                                    ),
-                                                  ))
-                                                : Expanded(
-                                                    child: ListView.builder(
-                                                      itemCount:
-                                                          _feedListController
-                                                              .feedList.length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        return InkWell(
-                                                          onTap: () {
-                                                            Utility.showMessage(
-                                                                "Testing: ",
-                                                                "Hello");
-                                                            startTimer();
-                                                          },
+                                        builder:
+                                            (value) =>
+                                                _feedListController
+                                                            .isLoading.value ==
+                                                        true
+                                                    ? Expanded(
+                                                        child: Center(
                                                           child: Container(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    top: 2.0,
-                                                                    bottom:
-                                                                        2.0),
-                                                            child: Row(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Container(
-                                                                  width:
-                                                                      Get.width *
-                                                                          0.20,
-                                                                  height:
-                                                                      Get.width *
-                                                                          0.20,
-                                                                  padding:
-                                                                      EdgeInsets
-                                                                          .all(
-                                                                              10.0),
-                                                                  child:
-                                                                      Container(
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              10),
-                                                                      image:
-                                                                          DecorationImage(
-                                                                        image: AssetImage(
-                                                                            "assets/user_Tomhardy.jpg"),
-                                                                        fit: BoxFit
-                                                                            .fill,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                Center(
-                                                                  child: Column(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .center,
-                                                                    children: [
-                                                                      Container(
-                                                                        width: Get.width *
-                                                                            0.70,
-                                                                        child:
-                                                                            Text(
-                                                                          _feedListController
-                                                                              .feedList[index]
-                                                                              .title,
-                                                                          softWrap:
-                                                                              true,
-                                                                          maxLines:
-                                                                              1,
+                                                            height: 26,
+                                                            width: 26,
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              backgroundColor:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : Expanded(
+                                                        child:
+                                                            _feedListController
+                                                                    .feedList
+                                                                    .isEmpty
+                                                                ? Center(
+                                                                    child:
+                                                                        Container(
+                                                                      child: Text(
+                                                                          "No Feeds Found",
                                                                           style:
                                                                               TextStyle(
+                                                                            color:
+                                                                                Colors.white60,
                                                                             fontFamily:
                                                                                 "Poppins",
                                                                             fontWeight:
                                                                                 FontWeight.bold,
                                                                             fontSize:
-                                                                                15,
-                                                                            color:
-                                                                                Colors.white60,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                      Container(
-                                                                        width: Get.width *
-                                                                            0.70,
-                                                                        child:
-                                                                            Text(
-                                                                          _feedListController
-                                                                              .feedList[index]
-                                                                              .bodyText,
-                                                                          softWrap:
-                                                                              true,
-                                                                          maxLines:
-                                                                              2,
-                                                                          style:
-                                                                              TextStyle(
-                                                                            fontFamily:
-                                                                                "Poppins",
-                                                                            fontSize:
                                                                                 12,
-                                                                            color:
-                                                                                Colors.white60,
+                                                                          )),
+                                                                    ),
+                                                                  )
+                                                                : ListView
+                                                                    .builder(
+                                                                    itemCount: _feedListController
+                                                                        .feedList
+                                                                        .length,
+                                                                    itemBuilder:
+                                                                        (context,
+                                                                            index) {
+                                                                      return InkWell(
+                                                                        onTap:
+                                                                            () {
+                                                                          Utility.showMessage(
+                                                                              "Testing: ",
+                                                                              "Hello");
+                                                                          startTimer();
+                                                                        },
+                                                                        child:
+                                                                            Container(
+                                                                          padding: EdgeInsets.only(
+                                                                              top: 2.0,
+                                                                              bottom: 2.0),
+                                                                          child:
+                                                                              InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              Get.to(OpenFeed(
+                                                                                feedId: _feedListController.feedList[index].feedId,
+                                                                              ));
+                                                                            },
+                                                                            child:
+                                                                                Row(
+                                                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                                                              children: [
+                                                                                Container(
+                                                                                  width: Get.width * 0.20,
+                                                                                  height: Get.width * 0.20,
+                                                                                  padding: EdgeInsets.all(10.0),
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      borderRadius: BorderRadius.circular(10),
+                                                                                      image: DecorationImage(
+                                                                                        image: AssetImage("assets/user_Tomhardy.jpg"),
+                                                                                        fit: BoxFit.fill,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                                Center(
+                                                                                  child: Column(
+                                                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                    children: [
+                                                                                      Container(
+                                                                                        width: Get.width * 0.70,
+                                                                                        child: Text(
+                                                                                          _feedListController.feedList[index].title,
+                                                                                          softWrap: true,
+                                                                                          maxLines: 1,
+                                                                                          style: TextStyle(
+                                                                                            fontFamily: "Poppins",
+                                                                                            fontWeight: FontWeight.bold,
+                                                                                            fontSize: 15,
+                                                                                            color: Colors.white60,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                      Container(
+                                                                                        width: Get.width * 0.70,
+                                                                                        child: Text(
+                                                                                          _feedListController.feedList[index].bodyText,
+                                                                                          softWrap: true,
+                                                                                          maxLines: 2,
+                                                                                          style: TextStyle(
+                                                                                            fontFamily: "Poppins",
+                                                                                            fontSize: 12,
+                                                                                            color: Colors.white60,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                           ),
                                                                         ),
-                                                                      ),
-                                                                    ],
+                                                                      );
+                                                                    },
                                                                   ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    ),
-                                                  ),
+                                                      ),
                                       ),
                                     ],
                                   ),
