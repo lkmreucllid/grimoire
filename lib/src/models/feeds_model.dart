@@ -16,6 +16,7 @@ class FeedsModel {
       data = [];
       json['data'].forEach((v) {
         data.add(new FeedsList.fromJson(v));
+        data.add(new FeedsList.fromJson(v));
       });
     }
   }
@@ -68,8 +69,8 @@ class FeedsList {
     bodyText = json['body'];
     userId = json['user']['_id'];
     userName = json['user']['name'];
-    createdDate = json['createdDate'];
-    updatedDate = json['updatedDate'];
+    createdDate = json['createdAt'];
+    updatedDate = json['updatedAt'];
   }
 
   Map<String, dynamic> toJson() {

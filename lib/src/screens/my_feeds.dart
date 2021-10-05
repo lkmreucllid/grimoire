@@ -1,14 +1,11 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_medium/src/authentication/login_screen.dart';
 import 'package:flutter_medium/src/clippers/line_clipper.dart';
 import 'package:flutter_medium/src/controller/feed_list_controller.dart';
 import 'package:flutter_medium/src/controller/selected_category_controller.dart';
 import 'package:flutter_medium/src/utils/app_colors.dart';
-import 'package:flutter_medium/src/utils/utility.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'open_feed.dart';
+import 'package:intl/intl.dart';
 
 class MyFeeds extends StatefulWidget {
   @override
@@ -21,19 +18,16 @@ class _MyFeedsState extends State<MyFeeds> {
   final FeedListController _feedListController = Get.put(FeedListController());
   final SelectedCategoryController _selectedCategoryController =
       Get.put(SelectedCategoryController());
-
-  startTimer() async {
-    var _duration = new Duration(seconds: 2);
-    return new Timer(_duration, navigatePage);
-  }
-
-  void navigatePage() async {
-    //Get.to(() => OpenFeed());
-    Get.to(() => LoginScreen());
-  }
+  //final OpenFeedController _openFeedController = Get.put(OpenFeedController());
+  var formattedDate;
+  // void openCurrentFeed() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   _openFeedController.apiGetFeed(prefs.getString("currentlyReading"));
+  // }
 
   @override
   Widget build(BuildContext context) {
+    //openCurrentFeed();
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -46,7 +40,7 @@ class _MyFeedsState extends State<MyFeeds> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 20,
+                      height: 15,
                     ),
                     Text(
                       "My Feeds",
@@ -80,15 +74,18 @@ class _MyFeedsState extends State<MyFeeds> {
                           ),
                         ),
                         SizedBox(width: 10.0),
-                        Container(
-                          width: Get.width * 0.10,
-                          height: Get.width * 0.10,
+                        InkWell(
+                          onTap: () => Get.toNamed('/userProfile'),
                           child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                image: AssetImage("assets/dummyIcon3.jpeg"),
-                                fit: BoxFit.fill,
+                            width: Get.width * 0.10,
+                            height: Get.width * 0.10,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                  image: AssetImage("assets/dummyIcon3.jpeg"),
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                             ),
                           ),
@@ -122,12 +119,15 @@ class _MyFeedsState extends State<MyFeeds> {
                                         onTap: () {
                                           setState(() {
                                             _feedListController.onItemClicked(
-                                                _selectedCategoryController
-                                                    .selectedCategoryList[index]
-                                                    .id);
+                                                index == 0
+                                                    ? ""
+                                                    : _selectedCategoryController
+                                                        .selectedCategoryList[
+                                                            index]
+                                                        .id);
                                             _selectedFeedIndex = index;
                                             _feedListController
-                                                .isLoading.value = true;
+                                                .isLoadingFeeds.value = true;
                                           });
                                         },
                                         child: Column(
@@ -207,7 +207,7 @@ class _MyFeedsState extends State<MyFeeds> {
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 width: Get.width,
-                                height: Get.width * 1.15,
+                                height: Get.height * 0.60,
                                 child: Container(
                                   child: Column(
                                     crossAxisAlignment:
@@ -228,7 +228,8 @@ class _MyFeedsState extends State<MyFeeds> {
                                         builder:
                                             (value) =>
                                                 _feedListController
-                                                            .isLoading.value ==
+                                                            .isLoadingFeeds
+                                                            .value ==
                                                         true
                                                     ? Expanded(
                                                         child: Center(
@@ -274,84 +275,125 @@ class _MyFeedsState extends State<MyFeeds> {
                                                                     itemBuilder:
                                                                         (context,
                                                                             index) {
-                                                                      return InkWell(
-                                                                        onTap:
-                                                                            () {
-                                                                          Utility.showMessage(
-                                                                              "Testing: ",
-                                                                              "Hello");
-                                                                          startTimer();
-                                                                        },
-                                                                        child:
-                                                                            Container(
-                                                                          padding: EdgeInsets.only(
-                                                                              top: 2.0,
-                                                                              bottom: 2.0),
-                                                                          child:
-                                                                              InkWell(
-                                                                            onTap:
-                                                                                () {
-                                                                              Get.to(OpenFeed(
-                                                                                feedId: _feedListController.feedList[index].feedId,
-                                                                              ));
-                                                                            },
+                                                                      DateTime
+                                                                          date =
+                                                                          DateTime.parse(_feedListController
+                                                                              .feedList[index]
+                                                                              .createdDate);
+                                                                      formattedDate = DateFormat.yMMMMd(
+                                                                              'en_US')
+                                                                          .format(
+                                                                              date);
+                                                                      return Column(
+                                                                        children: [
+                                                                          Container(
+                                                                            padding:
+                                                                                EdgeInsets.only(top: 2.0, bottom: 10.0),
                                                                             child:
-                                                                                Row(
-                                                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                                                              children: [
-                                                                                Container(
-                                                                                  width: Get.width * 0.20,
-                                                                                  height: Get.width * 0.20,
-                                                                                  padding: EdgeInsets.all(10.0),
-                                                                                  child: Container(
-                                                                                    decoration: BoxDecoration(
-                                                                                      borderRadius: BorderRadius.circular(10),
-                                                                                      image: DecorationImage(
-                                                                                        image: AssetImage("assets/user_Tomhardy.jpg"),
-                                                                                        fit: BoxFit.fill,
-                                                                                      ),
+                                                                                InkWell(
+                                                                              onTap: () {
+                                                                                Get.to(OpenFeed(
+                                                                                  feedId: _feedListController.feedList[index].feedId,
+                                                                                ));
+                                                                              },
+                                                                              child: Row(
+                                                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                children: [
+                                                                                  Center(
+                                                                                    child: Column(
+                                                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                      children: [
+                                                                                        Container(
+                                                                                          width: Get.width * 0.90,
+                                                                                          child: Text(
+                                                                                            "${_feedListController.feedList[index].userName} in ${_feedListController.feedList[index].categoryName}",
+                                                                                            softWrap: true,
+                                                                                            maxLines: 1,
+                                                                                            style: TextStyle(
+                                                                                              fontFamily: "Poppins",
+                                                                                              fontWeight: FontWeight.bold,
+                                                                                              fontSize: 12,
+                                                                                              color: Colors.white60,
+                                                                                            ),
+                                                                                            textAlign: TextAlign.center,
+                                                                                          ),
+                                                                                        ),
+                                                                                        Container(
+                                                                                          width: Get.width * 0.90,
+                                                                                          child: Text(
+                                                                                            _feedListController.feedList[index].title,
+                                                                                            softWrap: true,
+                                                                                            maxLines: 1,
+                                                                                            style: TextStyle(
+                                                                                              fontFamily: "Poppins",
+                                                                                              fontWeight: FontWeight.bold,
+                                                                                              fontSize: 15,
+                                                                                              color: Colors.white60,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                        Container(
+                                                                                          width: Get.width * 0.90,
+                                                                                          child: Text(
+                                                                                            _feedListController.feedList[index].bodyText,
+                                                                                            softWrap: true,
+                                                                                            maxLines: 2,
+                                                                                            style: TextStyle(
+                                                                                              fontFamily: "Poppins",
+                                                                                              fontSize: 12,
+                                                                                              color: Colors.white60,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                        Container(
+                                                                                          width: Get.width * 0.90,
+                                                                                          child: Row(
+                                                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                                            children: [
+                                                                                              Text(
+                                                                                                "${_feedListController.feedList[index].likes.toString()} likes",
+                                                                                                softWrap: true,
+                                                                                                maxLines: 2,
+                                                                                                style: TextStyle(
+                                                                                                  fontFamily: "Poppins",
+                                                                                                  fontSize: 12,
+                                                                                                  fontWeight: FontWeight.bold,
+                                                                                                  color: Colors.white60,
+                                                                                                ),
+                                                                                              ),
+                                                                                              Text(
+                                                                                                formattedDate,
+                                                                                                softWrap: true,
+                                                                                                maxLines: 2,
+                                                                                                style: TextStyle(
+                                                                                                  fontFamily: "Poppins",
+                                                                                                  fontSize: 12,
+                                                                                                  fontWeight: FontWeight.bold,
+                                                                                                  color: Colors.white60,
+                                                                                                ),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                        ),
+                                                                                      ],
                                                                                     ),
                                                                                   ),
-                                                                                ),
-                                                                                Center(
-                                                                                  child: Column(
-                                                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                    children: [
-                                                                                      Container(
-                                                                                        width: Get.width * 0.70,
-                                                                                        child: Text(
-                                                                                          _feedListController.feedList[index].title,
-                                                                                          softWrap: true,
-                                                                                          maxLines: 1,
-                                                                                          style: TextStyle(
-                                                                                            fontFamily: "Poppins",
-                                                                                            fontWeight: FontWeight.bold,
-                                                                                            fontSize: 15,
-                                                                                            color: Colors.white60,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                      Container(
-                                                                                        width: Get.width * 0.70,
-                                                                                        child: Text(
-                                                                                          _feedListController.feedList[index].bodyText,
-                                                                                          softWrap: true,
-                                                                                          maxLines: 2,
-                                                                                          style: TextStyle(
-                                                                                            fontFamily: "Poppins",
-                                                                                            fontSize: 12,
-                                                                                            color: Colors.white60,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                              ],
+                                                                                ],
+                                                                              ),
                                                                             ),
                                                                           ),
-                                                                        ),
+                                                                          Divider(
+                                                                            height:
+                                                                                2.0,
+                                                                            color:
+                                                                                Colors.white,
+                                                                            indent:
+                                                                                10,
+                                                                            endIndent:
+                                                                                10,
+                                                                          ),
+                                                                        ],
                                                                       );
                                                                     },
                                                                   ),
@@ -384,14 +426,17 @@ class _MyFeedsState extends State<MyFeeds> {
                           right: Get.width / 2,
                           child: FloatingActionButton(
                             backgroundColor: Colors.white,
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.back();
+                              Get.toNamed('/createPost');
+                            },
                             child: Icon(
                               Icons.mode_edit_sharp,
                               color: Colors.amber,
                             ),
                           ),
                         ),
-                        ClipPath(
+                        /* ClipPath(
                           clipper: MyCustomClipperLower(),
                           child: Container(
                             padding: EdgeInsets.only(
@@ -406,75 +451,95 @@ class _MyFeedsState extends State<MyFeeds> {
                             ),
                             width: Get.width,
                             height: Get.height * 0.15,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: Get.width * 0.15,
-                                  height: Get.width * 0.15,
-                                  child: new Image.asset(
-                                    "assets/honkLogo.png",
-                                    scale: 5.0,
-                                  ),
-                                ),
-                                Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: Get.width * 0.70,
-                                        child: Text(
-                                          'Discover Your Path To Success Discover Your Path To Success',
-                                          softWrap: true,
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                            fontFamily: "Poppins",
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15,
-                                            color: Colors.black,
+                            child: GetBuilder<OpenFeedController>(
+                              init: OpenFeedController(),
+                              builder: (value) => _openFeedController
+                                          .isLoadingFeed.value ==
+                                      true
+                                  ? Stack(
+                                      children: [
+                                        Container(
+                                          height: Get.height,
+                                          width: Get.width,
+                                          color: AppColors.primaryColorBlue,
+                                        ),
+                                        Center(
+                                          child: Container(
+                                            height: 26,
+                                            width: 26,
+                                            child: CircularProgressIndicator(
+                                              backgroundColor: Colors.white,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Container(
-                                        width: Get.width * 0.70,
-                                        child: Text(
-                                          'Hello, this is for Testing purpose only. Hello, this is for Testing purpose only. Hello, this is for Testing purpose only. Hello, this is for Testing purpose only. Hello, this is for Testing purpose only. Hello, this is for Testing purpose only. Hello, this is for Testing purpose only. Hello, this is for Testing purpose only. Hello, this is for Testing purpose only. Hello, this is for Testing purpose only. Hello, this is for Testing purpose only. ',
-                                          softWrap: true,
-                                          maxLines: 2,
-                                          style: TextStyle(
-                                            fontFamily: "Poppins",
-                                            fontSize: 12,
-                                            color: Colors.black,
-                                          ),
+                                      ],
+                                    )
+                                  : Container(
+                                      height: Get.height,
+                                      padding: EdgeInsets.all(10.0),
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: Get.width * 0.90,
+                                              child: Text(
+                                                "Currently Reading",
+                                                softWrap: true,
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 10,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: Get.width * 0.90,
+                                              child: Text(
+                                                _openFeedController
+                                                    .updateFeedModel.title,
+                                                softWrap: true,
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: Get.width * 0.90,
+                                              child: Text(
+                                                _openFeedController
+                                                    .updateFeedModel.bodyText,
+                                                softWrap: true,
+                                                maxLines: 2,
+                                                style: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontSize: 12,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                                    ),
                             ),
                           ),
-                        ),
+                        ),*/
                       ],
                     ),
                   ],
                 ),
               ),
             ),
-            /* Positioned(
-              bottom: 15.0,
-              right: 15.0,
-              child: FloatingActionButton(
-                backgroundColor: Colors.white,
-                onPressed: () {},
-                child: Icon(
-                  Icons.mode_edit_sharp,
-                  color: Colors.amber,
-                ),
-              ),
-            ),*/
           ],
         ),
       ),

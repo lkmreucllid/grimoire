@@ -30,11 +30,9 @@ class SelectedCategoryController extends GetxController {
         .then((value) {
       if (value.body['sucess'] == true) {
         Get.back();
-        //  print(value.body);
         isSelCategoryLoading.value = false;
         selectedCatergoryModel = SelectCategoryModel.fromJson(value.body);
         selectedCategoryList.value = selectedCatergoryModel.data;
-        // print('lenght: ${selectedCategoryList.length}');
         update();
       }
     });

@@ -1,9 +1,11 @@
 import 'package:flutter_medium/src/authentication/login_screen.dart';
 import 'package:flutter_medium/src/authentication/signup_screen.dart';
 import 'package:flutter_medium/src/bindings/login_binding.dart';
-import 'package:flutter_medium/src/screens/create_feed.dart';
+import 'package:flutter_medium/src/screens/create_post.dart';
+import 'package:flutter_medium/src/screens/developers_profile.dart';
 import 'package:flutter_medium/src/screens/my_feeds.dart';
 import 'package:flutter_medium/src/screens/open_feed.dart';
+import 'package:flutter_medium/src/screens/user_profile.dart';
 import 'package:get/get.dart';
 import 'package:flutter_medium/splash_screen.dart';
 
@@ -31,8 +33,16 @@ class Routers {
       page: () => SignUpScreen(),
     ),
     GetPage(
-      name: '/createFeed',
-      page: () => CreateFeed(),
+      name: '/createPost',
+      page: () => CreatePost(),
+    ),
+    GetPage(
+      name: '/userProfile',
+      page: () => UserProfile(),
+    ),
+    GetPage(
+      name: '/developersProfile',
+      page: () => DeveloperProfile(),
     ),
   ];
 }

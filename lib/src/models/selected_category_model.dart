@@ -16,7 +16,6 @@ class SelectCategoryModel {
       data = [];
       json['data'].forEach((v) {
         data.add(new SelectedCategoryList.fromJson(v));
-        data.add(new SelectedCategoryList.fromJson(v));
       });
     }
   }

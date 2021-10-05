@@ -50,8 +50,7 @@ class _MyHomePageState extends State<MyApp> {
         ),
       ),
       getPages: Routers.routes,
-      //initialRoute: '/splashView',
-      initialRoute: '/feedsView',
+      initialRoute: '/splashView',
     );
   }
 }

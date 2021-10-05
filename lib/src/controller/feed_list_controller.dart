@@ -6,7 +6,7 @@ class FeedListController extends GetxController {
   FeedsModel feedsModel;
   RxList<FeedsList> feedList = <FeedsList>[].obs;
   String str = '';
-  RxBool isLoading = false.obs;
+  RxBool isLoadingFeeds = false.obs;
 
   @override
   void onInit() {
@@ -25,7 +25,7 @@ class FeedListController extends GetxController {
   }
 
   Future apiGetFeedsList() async {
-    isLoading.value = true;
+    isLoadingFeeds.value = true;
     TopFeedsProvider topFeeds = new TopFeedsProvider();
 
     topFeeds
@@ -34,13 +34,13 @@ class FeedListController extends GetxController {
       if (value.body['sucess'] == true) {
         if (value.body['message'] == 'Posts found') {
           Get.back();
-          isLoading.value = false;
+          isLoadingFeeds.value = false;
           feedsModel = FeedsModel.fromJson(value.body);
 
           feedList.value = feedsModel.data;
           update();
         } else if (value.body['message'] == 'No Posts found') {
-          isLoading.value = false;
+          isLoadingFeeds.value = false;
 
           feedList = <FeedsList>[].obs;
           update();
