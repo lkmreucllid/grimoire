@@ -24,11 +24,9 @@ class AuthController extends GetxController {
         .then((value) {
       if (value.body['sucess'] == false) {
         isLoadingAuth.value = false;
-        print('loginView Called');
         Get.offNamed('/loginView');
         update();
       } else {
-        print('feedsView Called');
         Get.offNamed('/feedsView');
       }
     });

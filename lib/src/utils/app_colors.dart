@@ -8,4 +8,6 @@ class AppColors {
   static const white = Color(0xffffffff);
   static const darkGrey = Color(0xffA9ACB1);
   static const purpleColor = Color(0xff793EE8);
+  static const eggPlant = Color(0xFF383443);
+  static const mustardColor = Color(0xFF8F6239);
 }

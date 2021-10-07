@@ -13,8 +13,6 @@ class UserProvider extends GetConnect {
   ) async {
     try {
       final res = await http.post(Uri.parse(url), body: data);
-      //final mData = json.decode(res.body) as Map<String, dynamic>;
-
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on SocketException {
       Get.back();

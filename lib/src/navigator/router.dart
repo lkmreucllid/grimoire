@@ -4,6 +4,7 @@ import 'package:flutter_medium/src/bindings/login_binding.dart';
 import 'package:flutter_medium/src/screens/create_post.dart';
 import 'package:flutter_medium/src/screens/developers_profile.dart';
 import 'package:flutter_medium/src/screens/my_feeds.dart';
+import 'package:flutter_medium/src/screens/need_help.dart';
 import 'package:flutter_medium/src/screens/open_feed.dart';
 import 'package:flutter_medium/src/screens/user_profile.dart';
 import 'package:get/get.dart';
@@ -43,6 +44,10 @@ class Routers {
     GetPage(
       name: '/developersProfile',
       page: () => DeveloperProfile(),
+    ),
+    GetPage(
+      name: '/needHelp',
+      page: () => NeedHelp(),
     ),
   ];
 }

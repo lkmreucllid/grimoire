@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class CreatePost extends StatelessWidget {
+class NeedHelp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Container(
           child: Center(
-            child: Text("Create Post"),
+            child: Text("Need Help"),
           ),
         ),
       ),

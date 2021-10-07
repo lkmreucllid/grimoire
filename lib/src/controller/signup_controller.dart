@@ -6,13 +6,27 @@ import 'package:flutter_medium/src/utils/utility.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginController extends GetxController {
+class SignUpController extends GetxController {
+  TextEditingController nameTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
-  RxBool emailFocusNode = false.obs;
+  TextEditingController confirmPasswordTextController = TextEditingController();
+  TextEditingController contactTextController = TextEditingController();
+  TextEditingController addressTextController = TextEditingController();
+
+  RxBool nameFocusNode = false.obs;
+  RxBool countryFocusNode = false.obs;
+  RxBool addressFocusNode = false.obs;
   RxBool passwordFocusNode = false.obs;
+  RxBool confirmPasswordFocusNode = false.obs;
+  RxBool contactFocusNode = false.obs;
+  RxBool genderFocusNode = false.obs;
+  RxBool emailFocusNode = false.obs;
   RxBool obscureText = true.obs;
-  String accessToken, name, email, contact, gender, country, address;
+  RxBool obscureConfirmText = true.obs;
+  String accessToken, name, email, contact, address, countryStr, genderStr;
+  RxString gender = "Male".obs;
+  RxString country = "India".obs;
 
   @override
   void onInit() {
@@ -34,6 +48,18 @@ class LoginController extends GetxController {
     update();
   }
 
+  void toggleConfirm() {
+    obscureConfirmText.value = !obscureConfirmText.value;
+    update();
+  }
+
+  String validateName(String value) {
+    if (value == null || value.trim().isEmpty) {
+      return "Please enter Name";
+    }
+    return null;
+  }
+
   String validateEmail(String value) {
     if (value == null || value.trim().isEmpty) {
       return "Please enter email address";
@@ -48,10 +74,19 @@ class LoginController extends GetxController {
   }
 
   static const passErrorMsg =
-      "Required atleast 1 capital letter, 1 special character and minimum 7 characters.";
+      "Password requires atleast 1 capital letter, 1 special character and minimum 7 characters.";
   String validatePassword(String value) {
     if (value == null || value.trim().isEmpty) {
       return "Please enter password";
+    }
+    return validateStructure(value) ? null : passErrorMsg;
+  }
+
+  String validateConfirmPassword(String value) {
+    if (value == null || value.trim().isEmpty) {
+      return "Please enter password";
+    } else if (value != passwordTextController.text) {
+      return "password must be same";
     }
     return validateStructure(value) ? null : passErrorMsg;
   }
@@ -67,7 +102,26 @@ class LoginController extends GetxController {
     return hasUpperCase & hasSpecialCharacters & hasMinLength;
   }
 
-  Future apiLogin() async {
+  String validateContact(String value) {
+    if (value == null || value.trim().isEmpty) {
+      return "Please enter contact number";
+    }
+    return isValidContact(value) ? null : "Please enter valid contact number";
+  }
+
+  bool isValidContact(String contact, [int minLength = 10]) {
+    final bool hasMinLength = contact.length > minLength;
+    return hasMinLength;
+  }
+
+  String validateAddress(String value) {
+    if (value == null || value.trim().isEmpty) {
+      return "Please enter Address";
+    }
+    return null;
+  }
+
+  Future apisignUp() async {
     if (emailTextController.text.trim() == "") {
       Utility.showMessage("Alert", "Please enter email address");
     } else if (!GetUtils.isEmail(emailTextController.text)) {
@@ -79,8 +133,13 @@ class LoginController extends GetxController {
     } else {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       Map _data = {
-        "email": emailTextController.text,
-        "password": passwordTextController.text
+        "name": nameTextController.text,
+        "country": country.value.toString(),
+        "address": addressTextController.text,
+        "password": passwordTextController.text,
+        "contact": contactTextController.text,
+        "gender": gender.value.toString().toUpperCase(),
+        "email": emailTextController.text
       };
 
       Get.dialog(Center(child: CircularProgressIndicator()),
@@ -88,10 +147,10 @@ class LoginController extends GetxController {
 
       UserProvider()
           .postApi(_data,
-              ServerCommunicator().baseUrl + ServerCommunicator().loginUrl)
+              ServerCommunicator().baseUrl + ServerCommunicator().signupUrl)
           .then((value) {
         if (value != null) {
-          print("LOGIN RESPONSE *******" + value.body.toString());
+          print("SignUp RESPONSE *******" + value.body.toString());
           Get.back();
           if (value.body['sucess'] == true) {
             accessToken = value.body['data']['token'].toString();
@@ -99,15 +158,15 @@ class LoginController extends GetxController {
             email = value.body['data']['email'].toString();
             contact = value.body['data']['contact'].toString();
             address = value.body['data']['address'].toString();
-            country = value.body['data']['country'].toString();
-            gender = value.body['data']['gender'].toString();
+            countryStr = value.body['data']['country'].toString();
+            genderStr = value.body['data']['gender'].toString();
             prefs.setString("token", accessToken);
             prefs.setString("name", name);
             prefs.setString("email", email);
             prefs.setString("contact", contact);
             prefs.setString("address", address);
-            prefs.setString("country", country);
-            prefs.setString("gender", gender);
+            prefs.setString("country", countryStr);
+            prefs.setString("gender", genderStr);
             emailTextController.clear();
             passwordTextController.clear();
             Get.offAll(() => MyFeeds());

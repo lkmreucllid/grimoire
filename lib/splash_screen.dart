@@ -27,21 +27,26 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     startTimer();
     return Scaffold(
-      backgroundColor: Color.fromARGB(213, 213, 209, 1),
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
           new Container(
             decoration: new BoxDecoration(
               image: new DecorationImage(
-                image: new AssetImage("assets/honkbg.png"),
+                image: new AssetImage("assets/stars_bkg.jpg"),
                 fit: BoxFit.fill,
               ),
             ),
           ),
-          Center(
+          Container(
+            color: Colors.black.withOpacity(0.5),
+          ),
+          Positioned(
+            bottom: 0.0,
+            right: 0.0,
             child: new Image.asset(
-              "assets/honkLogo.png",
-              scale: 2.5,
+              "assets/jupi_qua.png",
+              scale: 1.5,
             ),
           ),
         ],

@@ -133,13 +133,14 @@ class _MyFeedsState extends State<MyFeeds> {
                                         child: Column(
                                           children: [
                                             Container(
+                                              padding: EdgeInsets.all(2.0),
                                               height: 50,
                                               decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(25),
                                                   color: _selectedFeedIndex ==
                                                           index
-                                                      ? Colors.red
+                                                      ? Colors.amber
                                                       : Colors.black12),
                                               child: IconButton(
                                                 //onPressed: () {},
