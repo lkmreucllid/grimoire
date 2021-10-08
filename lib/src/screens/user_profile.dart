@@ -42,8 +42,11 @@ class _UserProfileState extends State<UserProfile> {
               color: AppColors.eggPlant,
             ),
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 25.0),
+              padding: const EdgeInsets.only(
+                top: 25.0,
+                bottom: 25.0,
+                left: 15.0,
+              ),
               decoration: new BoxDecoration(
                 image: new DecorationImage(
                   image: new AssetImage("assets/user_profile.png"),
@@ -85,6 +88,25 @@ class _UserProfileState extends State<UserProfile> {
                       ],
                     ),
                   ),
+                  //Added light saber effect to the divider
+                  /*Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color(0xFF42DAFB).withOpacity(0.5),
+                          spreadRadius: 10,
+                          blurRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: Divider(
+                      height: 2.0,
+                      thickness: 3.0,
+                      color: Colors.white,
+                      indent: 20,
+                      //endIndent: 20,
+                    ),
+                  ),*/
                   Divider(
                     height: 2.0,
                     color: Colors.white,
@@ -215,7 +237,7 @@ class _UserProfileState extends State<UserProfile> {
                   Container(
                     height: 55,
                     width: Get.width,
-                    padding: const EdgeInsets.only(left: 15.0),
+                    padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                     child: GestureDetector(
                       onTap: () async {
                         SharedPreferences prefs =

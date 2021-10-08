@@ -83,7 +83,7 @@ class _MyFeedsState extends State<MyFeeds> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 image: DecorationImage(
-                                  image: AssetImage("assets/dummyIcon3.jpeg"),
+                                  image: AssetImage("assets/male.jpg"),
                                   fit: BoxFit.fill,
                                 ),
                               ),
@@ -234,14 +234,26 @@ class _MyFeedsState extends State<MyFeeds> {
                                                         true
                                                     ? Expanded(
                                                         child: Center(
-                                                          child: Container(
-                                                            height: 26,
-                                                            width: 26,
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              backgroundColor:
-                                                                  Colors.white,
-                                                            ),
+                                                          child: Stack(
+                                                            children: [
+                                                              Container(
+                                                                child: Image.asset(
+                                                                    'assets/loading.png'),
+                                                              ),
+                                                              Center(
+                                                                child:
+                                                                    Container(
+                                                                  height: 26,
+                                                                  width: 26,
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
                                                       )
@@ -253,19 +265,9 @@ class _MyFeedsState extends State<MyFeeds> {
                                                                 ? Center(
                                                                     child:
                                                                         Container(
-                                                                      child: Text(
-                                                                          "No Feeds Found",
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                Colors.white60,
-                                                                            fontFamily:
-                                                                                "Poppins",
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            fontSize:
-                                                                                12,
-                                                                          )),
+                                                                      child: Image
+                                                                          .asset(
+                                                                              'assets/oops_robo.png'),
                                                                     ),
                                                                   )
                                                                 : ListView

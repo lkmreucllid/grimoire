@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 class OpenFeedController extends GetxController {
   RxBool isLoadingFeed = false.obs;
-  OpenFeedModel updateFeedModel;
+  OpenFeedModel openFeedModel;
 
   @override
   void onInit() {
@@ -27,7 +27,7 @@ class OpenFeedController extends GetxController {
         .then((value) {
       if (value.body['sucess'] == true) {
         isLoadingFeed.value = false;
-        updateFeedModel = OpenFeedModel.fromJson(value.body);
+        openFeedModel = OpenFeedModel.fromJson(value.body);
         update();
       }
     });

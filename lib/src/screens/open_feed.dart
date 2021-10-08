@@ -36,6 +36,11 @@ class _OpenFeedState extends State<OpenFeed> {
                     ),
                     Center(
                       child: Container(
+                        child: Image.asset('assets/processing_orange.png'),
+                      ),
+                    ),
+                    Center(
+                      child: Container(
                         height: 26,
                         width: 26,
                         child: CircularProgressIndicator(
@@ -56,7 +61,7 @@ class _OpenFeedState extends State<OpenFeed> {
                           width: Get.width,
                           color: AppColors.primaryColorBlue,
                           child: Text(
-                            _openFeedController.updateFeedModel.title,
+                            _openFeedController.openFeedModel.title,
                             softWrap: true,
                             style: TextStyle(
                               fontFamily: "Poppins",
@@ -77,7 +82,7 @@ class _OpenFeedState extends State<OpenFeed> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text(
-                                _openFeedController.updateFeedModel.userName,
+                                _openFeedController.openFeedModel.userName,
                                 softWrap: true,
                                 style: TextStyle(
                                   fontFamily: "Poppins",
@@ -89,7 +94,7 @@ class _OpenFeedState extends State<OpenFeed> {
                               Text(
                                 DateFormat.yMMMMd('en_US').format(
                                     DateTime.parse(_openFeedController
-                                        .updateFeedModel.createdDate)),
+                                        .openFeedModel.createdDate)),
                                 softWrap: true,
                                 style: TextStyle(
                                   fontFamily: "Poppins",
@@ -105,7 +110,7 @@ class _OpenFeedState extends State<OpenFeed> {
                           width: Get.width,
                           color: AppColors.primaryColorBlue,
                           child: Text(
-                            _openFeedController.updateFeedModel.bodyText,
+                            _openFeedController.openFeedModel.bodyText,
                             softWrap: true,
                             style: TextStyle(
                               fontFamily: "Poppins",
@@ -137,7 +142,7 @@ class _OpenFeedState extends State<OpenFeed> {
                                       ),
                               ),
                               Text(
-                                "${_openFeedController.updateFeedModel.likes.toString()} likes",
+                                "${_openFeedController.openFeedModel.likes.toString()} likes",
                                 softWrap: true,
                                 style: TextStyle(
                                   fontFamily: "Poppins",

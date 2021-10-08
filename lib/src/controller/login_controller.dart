@@ -12,7 +12,7 @@ class LoginController extends GetxController {
   RxBool emailFocusNode = false.obs;
   RxBool passwordFocusNode = false.obs;
   RxBool obscureText = true.obs;
-  String accessToken, name, email, contact, gender, country, address;
+  String accessToken, userId, name, email, contact, gender, country, address;
 
   @override
   void onInit() {
@@ -95,6 +95,7 @@ class LoginController extends GetxController {
           Get.back();
           if (value.body['sucess'] == true) {
             accessToken = value.body['data']['token'].toString();
+            userId = value.body['data']['_id'].toString();
             name = value.body['data']['name'].toString();
             email = value.body['data']['email'].toString();
             contact = value.body['data']['contact'].toString();
@@ -102,6 +103,7 @@ class LoginController extends GetxController {
             country = value.body['data']['country'].toString();
             gender = value.body['data']['gender'].toString();
             prefs.setString("token", accessToken);
+            prefs.setString("userId", userId);
             prefs.setString("name", name);
             prefs.setString("email", email);
             prefs.setString("contact", contact);

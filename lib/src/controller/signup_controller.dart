@@ -24,7 +24,14 @@ class SignUpController extends GetxController {
   RxBool emailFocusNode = false.obs;
   RxBool obscureText = true.obs;
   RxBool obscureConfirmText = true.obs;
-  String accessToken, name, email, contact, address, countryStr, genderStr;
+  String accessToken,
+      userId,
+      name,
+      email,
+      contact,
+      address,
+      countryStr,
+      genderStr;
   RxString gender = "Male".obs;
   RxString country = "India".obs;
 
@@ -154,6 +161,7 @@ class SignUpController extends GetxController {
           Get.back();
           if (value.body['sucess'] == true) {
             accessToken = value.body['data']['token'].toString();
+            userId = value.body['data']['_id'].toString();
             name = value.body['data']['name'].toString();
             email = value.body['data']['email'].toString();
             contact = value.body['data']['contact'].toString();
@@ -161,6 +169,7 @@ class SignUpController extends GetxController {
             countryStr = value.body['data']['country'].toString();
             genderStr = value.body['data']['gender'].toString();
             prefs.setString("token", accessToken);
+            prefs.setString("userId", userId);
             prefs.setString("name", name);
             prefs.setString("email", email);
             prefs.setString("contact", contact);

@@ -16,7 +16,6 @@ class FeedsModel {
       data = [];
       json['data'].forEach((v) {
         data.add(new FeedsList.fromJson(v));
-        data.add(new FeedsList.fromJson(v));
       });
     }
   }
