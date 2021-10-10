@@ -239,6 +239,28 @@ class _UserProfileState extends State<UserProfile> {
                     width: Get.width,
                     padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                     child: GestureDetector(
+                      onTap: () {
+                        Get.toNamed('/bookmarks');
+                      },
+                      child: Center(
+                        child: Text(
+                          "My Bookmarks",
+                          style: TextStyle(color: AppColors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    height: 2.0,
+                    color: Colors.white,
+                    indent: 20,
+                    endIndent: 20,
+                  ),
+                  Container(
+                    height: 55,
+                    width: Get.width,
+                    padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                    child: GestureDetector(
                       onTap: () async {
                         SharedPreferences prefs =
                             await SharedPreferences.getInstance();

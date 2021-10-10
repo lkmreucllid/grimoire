@@ -4,11 +4,15 @@ import 'dart:convert';
 import 'package:flutter_medium/src/utils/utility.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TopFeedsProvider extends GetConnect {
   Future<Response> getTopFeeds(String url) async {
     try {
-      final res = await http.get(Uri.parse(url));
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+      final res = await http
+          .get(Uri.parse(url), headers: {'Authorization': 'Bearer $token'});
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on SocketException {
       Get.back();

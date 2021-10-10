@@ -39,7 +39,7 @@ class FeedsList {
   String categoryIconURL;
   String title;
   String bodyText;
-  String userId;
+  //String userId;
   String userName;
   String createdDate;
   String updatedDate;
@@ -52,7 +52,7 @@ class FeedsList {
     this.categoryIconURL,
     this.title,
     this.bodyText,
-    this.userId,
+    //this.userId,
     this.userName,
     this.createdDate,
     this.updatedDate,
@@ -60,13 +60,13 @@ class FeedsList {
 
   FeedsList.fromJson(Map<String, dynamic> json) {
     feedId = json['_id'];
-    likes = json['likes'];
+    likes = json['totalLikes'];
     categoryId = json['category']['_id'];
     categoryName = json['category']['name'];
     categoryIconURL = json['category']['url'];
     title = json['title'];
     bodyText = json['body'];
-    userId = json['user']['_id'];
+    //userId = json['user']['_id'];
     userName = json['user']['name'];
     createdDate = json['createdAt'];
     updatedDate = json['updatedAt'];
@@ -81,7 +81,7 @@ class FeedsList {
     data['categoryIconURL'] = this.categoryIconURL;
     data['title'] = this.title;
     data['bodyText'] = this.bodyText;
-    data['userId'] = this.userId;
+    //data['userId'] = this.userId;
     data['userName'] = this.userName;
     data['createdDate'] = this.createdDate;
     data['updatedDate'] = this.updatedDate;

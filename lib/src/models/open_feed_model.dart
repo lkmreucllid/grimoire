@@ -25,7 +25,7 @@ class OpenFeedModel {
 
   OpenFeedModel.fromJson(Map<String, dynamic> json) {
     feedId = json['data']['_id'];
-    likes = json['data']['likes'];
+    likes = json['data']['totalLikes'];
     categoryId = json['data']['category']['_id'];
     categoryName = json['data']['category']['name'];
     title = json['data']['title'];

@@ -1,6 +1,7 @@
 import 'package:flutter_medium/src/authentication/login_screen.dart';
 import 'package:flutter_medium/src/authentication/signup_screen.dart';
 import 'package:flutter_medium/src/bindings/login_binding.dart';
+import 'package:flutter_medium/src/screens/bookmarks_screen.dart';
 import 'package:flutter_medium/src/screens/create_post.dart';
 import 'package:flutter_medium/src/screens/developers_profile.dart';
 import 'package:flutter_medium/src/screens/my_feeds.dart';
@@ -48,6 +49,10 @@ class Routers {
     GetPage(
       name: '/needHelp',
       page: () => NeedHelp(),
+    ),
+    GetPage(
+      name: '/bookmarks',
+      page: () => BookmarksScreen(),
     ),
   ];
 }
