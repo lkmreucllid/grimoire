@@ -5,6 +5,7 @@ import 'package:flutter_medium/src/screens/my_feeds.dart';
 import 'package:flutter_medium/src/utils/server_communicator.dart';
 import 'package:flutter_medium/src/utils/utility.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CreatePostController extends GetxController {
   RxString selectedCategory = "".obs;
@@ -46,11 +47,15 @@ class CreatePostController extends GetxController {
 
       CreatePostProvider()
           .postFeed(_data, ServerCommunicator().baseUrl + 'post')
-          .then((value) {
+          .then((value) async {
         if (value != null) {
           Get.back();
           if (value.body['sucess'] == true) {
             Get.offAll(() => MyFeeds());
+          } else if (value.body['message'] == 'User unauthorized') {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setString("token", "");
+            Get.offNamed('/loginView');
           } else {
             Utility.showMessage("Alert", value.body['message']);
           }

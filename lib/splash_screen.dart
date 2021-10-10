@@ -37,11 +37,14 @@ class SplashScreen extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
+          Positioned.fill(
             bottom: 50.0,
-            child: Text(
-              "Something new to Learn",
-              style: Theme.of(context).textTheme.headline1,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Text(
+                "Something new to Learn",
+                style: Theme.of(context).textTheme.headline1,
+              ),
             ),
           ),
         ],

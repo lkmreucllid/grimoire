@@ -9,6 +9,7 @@ class OpenFeedModel {
   String userName;
   String createdDate;
   String updatedDate;
+  bool isLiked;
 
   OpenFeedModel({
     this.feedId,
@@ -21,6 +22,7 @@ class OpenFeedModel {
     this.userName,
     this.createdDate,
     this.updatedDate,
+    this.isLiked,
   });
 
   OpenFeedModel.fromJson(Map<String, dynamic> json) {
@@ -34,6 +36,7 @@ class OpenFeedModel {
     userName = json['data']['user']['name'];
     createdDate = json['data']['createdAt'];
     updatedDate = json['data']['updatedAt'];
+    isLiked = json['data']['isLiked'];
   }
 
   Map<String, dynamic> toJson() {
@@ -48,6 +51,7 @@ class OpenFeedModel {
     data['userName'] = this.userName;
     data['createdDate'] = this.createdDate;
     data['updatedDate'] = this.updatedDate;
+    data['isLiked'] = this.isLiked;
     return data;
   }
 }

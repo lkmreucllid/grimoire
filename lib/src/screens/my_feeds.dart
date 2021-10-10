@@ -102,88 +102,111 @@ class _MyFeedsState extends State<MyFeeds> {
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: GetBuilder<SelectedCategoryController>(
-                          builder: (value) => Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 150,
-                                width: Get.size.width,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: _selectedCategoryController
-                                      .selectedCategoryList.length,
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            _feedListController.onItemClicked(
-                                                index == 0
-                                                    ? ""
-                                                    : _selectedCategoryController
-                                                        .selectedCategoryList[
-                                                            index]
-                                                        .id);
-                                            _selectedFeedIndex = index;
-                                            _feedListController
-                                                .isLoadingFeeds.value = true;
-                                          });
-                                        },
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.all(2.0),
-                                              height: 50,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(25),
-                                                  color: _selectedFeedIndex ==
-                                                          index
-                                                      ? Colors.amber
-                                                      : Colors.black12),
-                                              child: IconButton(
-                                                //onPressed: () {},
-                                                icon: Image.network(
-                                                    '${_selectedCategoryController.selectedCategoryList[index].img}'),
-                                                color:
-                                                    _selectedFeedIndex == index
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                              ),
-                                            ),
-                                            Container(
-                                              height: 30,
-                                              width: 90,
-                                              child: Center(
-                                                child: Text(
-                                                  _selectedCategoryController
-                                                      .selectedCategoryList[
-                                                          index]
-                                                      .name,
-                                                  textAlign: TextAlign.center,
-                                                  softWrap: true,
-                                                  style: TextStyle(
-                                                    color: _selectedFeedIndex ==
-                                                            index
-                                                        ? Colors.black
-                                                        : Colors.black54,
-                                                    fontFamily: "Poppins",
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 10,
+                          builder: (value) => _selectedCategoryController
+                                      .isSelCategoryLoading.value ==
+                                  true
+                              ? Center(
+                                  child: Container(
+                                    height: 3,
+                                    width: Get.width * 0.90,
+                                    child: LinearProgressIndicator(
+                                      backgroundColor: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              : Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      height: 150,
+                                      width: Get.size.width,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: _selectedCategoryController
+                                            .selectedCategoryList.length,
+                                        itemBuilder: (context, index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(2.0),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  _feedListController
+                                                      .onItemClicked(index == 0
+                                                          ? ""
+                                                          : _selectedCategoryController
+                                                              .selectedCategoryList[
+                                                                  index]
+                                                              .id);
+                                                  _selectedFeedIndex = index;
+                                                  _feedListController
+                                                      .isLoadingFeeds
+                                                      .value = true;
+                                                });
+                                              },
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.all(10.0),
+                                                    height: 50,
+                                                    width: 50,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(25),
+                                                        color:
+                                                            _selectedFeedIndex ==
+                                                                    index
+                                                                ? Colors.amber
+                                                                : Colors
+                                                                    .black12),
+                                                    child: ImageIcon(
+                                                      NetworkImage(
+                                                          '${_selectedCategoryController.selectedCategoryList[index].img}'),
+                                                      color:
+                                                          _selectedFeedIndex ==
+                                                                  index
+                                                              ? Colors.white
+                                                              : Colors.black,
+                                                      size: 25,
+                                                    ),
                                                   ),
-                                                ),
+                                                  Container(
+                                                    height: 30,
+                                                    width: 90,
+                                                    child: Center(
+                                                      child: Text(
+                                                        _selectedCategoryController
+                                                            .selectedCategoryList[
+                                                                index]
+                                                            .name,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        softWrap: true,
+                                                        style: TextStyle(
+                                                          color:
+                                                              _selectedFeedIndex ==
+                                                                      index
+                                                                  ? Colors.black
+                                                                  : Colors
+                                                                      .black54,
+                                                          fontFamily: "Poppins",
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 10,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          ],
-                                        ),
+                                          );
+                                        },
                                       ),
-                                    );
-                                  },
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
                         ),
                       ),
                     ),
@@ -371,6 +394,15 @@ class _MyFeedsState extends State<MyFeeds> {
                                                                                         color: Colors.white60,
                                                                                       ),
                                                                                     ),
+                                                                                    /* _feedListController.feedList[index].isLiked == true
+                                                                                        ? new Icon(
+                                                                                            Icons.favorite,
+                                                                                            color: Colors.red,
+                                                                                          )
+                                                                                        : new Icon(
+                                                                                            Icons.favorite,
+                                                                                            color: Colors.black,
+                                                                                          ),*/
                                                                                     Text(
                                                                                       formattedDate,
                                                                                       softWrap: true,
@@ -410,7 +442,7 @@ class _MyFeedsState extends State<MyFeeds> {
                                   ),
                                 ),
                               ),
-                              Positioned(
+                              /*Positioned(
                                 bottom: 10.0,
                                 right: 10.0,
                                 child: Container(
@@ -425,7 +457,7 @@ class _MyFeedsState extends State<MyFeeds> {
                                     color: Colors.white,
                                   ),
                                 ),
-                              ),
+                              ),*/
                             ],
                           ),
                         ),

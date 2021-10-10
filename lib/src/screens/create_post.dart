@@ -81,7 +81,7 @@ class _CreatePostState extends State<CreatePost> {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.grey,
+                                color: Colors.grey[200],
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               height: 100.0,
@@ -142,7 +142,7 @@ class _CreatePostState extends State<CreatePost> {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.grey,
+                                color: Colors.grey[200],
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               height: 600.0,

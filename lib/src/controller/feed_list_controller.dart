@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_medium/src/models/feeds_model.dart';
 import 'package:get/get.dart';
 import 'package:flutter_medium/src/provider/top_feeds_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FeedListController extends GetxController {
   FeedsModel feedsModel;
@@ -34,7 +35,7 @@ class FeedListController extends GetxController {
     topFeeds
         .getTopFeeds(
             "https://my-medium-app.herokuapp.com/post?category=$selectedCategoryId")
-        .then((value) {
+        .then((value) async {
       if (value.body['sucess'] == true) {
         if (value.body['message'] == 'Posts found') {
           Get.back();
@@ -51,6 +52,10 @@ class FeedListController extends GetxController {
 
           update();
         }
+      } else if (value.body['message'] == 'User unauthorized') {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString("token", "");
+        Get.offNamed('/loginView');
       }
     });
     //}

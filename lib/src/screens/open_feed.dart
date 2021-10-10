@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_medium/src/controller/bookmarks_controller.dart';
+import 'package:flutter_medium/src/controller/likes_controller.dart';
 import 'package:flutter_medium/src/controller/open_feed_controller.dart';
 import 'package:flutter_medium/src/utils/app_colors.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,7 @@ class OpenFeed extends StatefulWidget {
 class _OpenFeedState extends State<OpenFeed> {
   final OpenFeedController _openFeedController = Get.put(OpenFeedController());
   final BookmarkController _bookmarkController = Get.put(BookmarkController());
+  final LikesController _likesController = Get.put(LikesController());
 
   var formattedDate;
 
@@ -24,7 +26,7 @@ class _OpenFeedState extends State<OpenFeed> {
   Widget build(BuildContext context) {
     _openFeedController.apiGetFeed(widget.feedId);
     _bookmarkController.getBookMarkFeed(widget.feedId);
-
+    // _likesController.isLiked.value = _openFeedController.openFeedModel.isLiked;
     return Scaffold(
       body: SafeArea(
         child: GetBuilder<OpenFeedController>(
@@ -136,25 +138,48 @@ class _OpenFeedState extends State<OpenFeed> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: 1 == 1
-                                      ? Icon(
-                                          Icons.favorite,
-                                          color: Colors.red,
-                                        )
-                                      : Icon(
-                                          Icons.favorite_border,
-                                          color: Colors.black,
-                                        ),
-                                ),
-                                Text(
-                                  "${_openFeedController.openFeedModel.likes.toString()} likes",
-                                  softWrap: true,
-                                  style: TextStyle(
-                                    fontFamily: "Poppins",
-                                    fontSize: 15,
-                                    color: Colors.black,
+                                GetBuilder<LikesController>(
+                                    init: LikesController(),
+                                    builder: (value) =>
+                                        _likesController.isLiked.value == true
+                                            ? Container(
+                                                child: IconButton(
+                                                  onPressed: () {
+                                                    _likesController.unLikePost(
+                                                        _openFeedController
+                                                            .openFeedModel
+                                                            .feedId);
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.favorite,
+                                                    color: Colors.red,
+                                                  ),
+                                                ),
+                                              )
+                                            : Container(
+                                                child: IconButton(
+                                                  onPressed: () {
+                                                    _likesController.likePost(
+                                                        _openFeedController
+                                                            .openFeedModel
+                                                            .feedId);
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.favorite_border,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              )),
+                                GetBuilder<LikesController>(
+                                  init: LikesController(),
+                                  builder: (value) => Text(
+                                    "${_likesController.likes.toString()} likes",
+                                    softWrap: true,
+                                    style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
                                 GetBuilder<BookmarkController>(

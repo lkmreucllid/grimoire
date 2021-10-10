@@ -43,6 +43,7 @@ class FeedsList {
   String userName;
   String createdDate;
   String updatedDate;
+  bool isLiked;
 
   FeedsList({
     this.feedId,
@@ -56,6 +57,7 @@ class FeedsList {
     this.userName,
     this.createdDate,
     this.updatedDate,
+    this.isLiked,
   });
 
   FeedsList.fromJson(Map<String, dynamic> json) {
@@ -70,6 +72,7 @@ class FeedsList {
     userName = json['user']['name'];
     createdDate = json['createdAt'];
     updatedDate = json['updatedAt'];
+    isLiked = json['isLiked'];
   }
 
   Map<String, dynamic> toJson() {
@@ -85,6 +88,7 @@ class FeedsList {
     data['userName'] = this.userName;
     data['createdDate'] = this.createdDate;
     data['updatedDate'] = this.updatedDate;
+    data['isLiked'] = this.isLiked;
     return data;
   }
 }

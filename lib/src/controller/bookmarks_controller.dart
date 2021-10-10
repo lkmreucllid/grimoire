@@ -2,6 +2,7 @@ import 'package:flutter_medium/src/models/bookmarks_model.dart';
 import 'package:flutter_medium/src/provider/bookmarks_provider.dart';
 import 'package:flutter_medium/src/utils/server_communicator.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BookmarkController extends GetxController {
   RxBool isBookMarked = false.obs;
@@ -83,7 +84,7 @@ class BookmarkController extends GetxController {
     isBookmarkScreenLoading.value = true;
     bookMarksProvider
         .getBookmarks(ServerCommunicator().baseUrl + "post/book-marked")
-        .then((value) {
+        .then((value) async {
       if (value.body['sucess'] == true) {
         if (value.body['message'] == 'Post found') {
           isBookmarkScreenLoading.value = false;
@@ -95,6 +96,10 @@ class BookmarkController extends GetxController {
           isBookmarkScreenLoading.value = false;
           update();
         }
+      } else if (value.body['message'] == 'User unauthorized') {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString("token", "");
+        Get.offNamed('/loginView');
       }
     });
   }
