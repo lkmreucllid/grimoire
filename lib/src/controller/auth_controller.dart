@@ -1,8 +1,10 @@
 import 'package:flutter_medium/src/provider/authorization_provider.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
   RxBool isLoadingAuth = false.obs;
+  AuthProvider authProvider = new AuthProvider();
 
   @override
   void onInit() {
@@ -17,8 +19,6 @@ class AuthController extends GetxController {
   Future apiGetLogin() async {
     isLoadingAuth.value = true;
 
-    AuthProvider authProvider = new AuthProvider();
-
     authProvider
         .checkLogin("https://my-medium-app.herokuapp.com/user")
         .then((value) {
@@ -28,6 +28,19 @@ class AuthController extends GetxController {
         update();
       } else {
         Get.offNamed('/feedsView');
+      }
+    });
+  }
+
+  Future logout() async {
+    authProvider
+        .logout("https://my-medium-app.herokuapp.com/user/logout")
+        .then((value) async {
+      if (value.body['sucess'] == true) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString("token", "");
+        Get.offNamed('/loginView');
+        update();
       }
     });
   }

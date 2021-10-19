@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_medium/src/controller/auth_controller.dart';
 import 'package:flutter_medium/src/utils/app_colors.dart';
 import 'package:flutter_medium/src/utils/common_widgets.dart';
 import 'package:get/get.dart';
@@ -28,6 +29,8 @@ class _UserProfileState extends State<UserProfile> {
       userGender = prefs.getString("gender").capitalizeFirst;
     });
   }
+
+  AuthController _authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -261,11 +264,8 @@ class _UserProfileState extends State<UserProfile> {
                     width: Get.width,
                     padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                     child: GestureDetector(
-                      onTap: () async {
-                        SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        prefs.setString("token", "");
-                        Get.offNamed('/loginView');
+                      onTap: () {
+                        _authController.logout();
                       },
                       child: Container(
                         height: 55,

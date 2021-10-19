@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class OpenFeedController extends GetxController {
   RxBool isLoadingFeed = false.obs;
+  RxBool allowEdit = false.obs;
   OpenFeedModel openFeedModel;
   LikesController _likesController = Get.put(LikesController());
 
@@ -21,20 +22,24 @@ class OpenFeedController extends GetxController {
 
   Future apiGetFeed(String feedId) async {
     isLoadingFeed.value = true;
-    OpenFeedProvider provideFeed = new OpenFeedProvider();
+    OpenFeedProvider providerFeed = new OpenFeedProvider();
 
-    provideFeed
+    providerFeed
         .getUpdateFeed("https://my-medium-app.herokuapp.com/post/$feedId")
         .then((value) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       if (value.body['sucess'] == true) {
         isLoadingFeed.value = false;
         openFeedModel = OpenFeedModel.fromJson(value.body);
 
         _likesController.isLiked.value = openFeedModel.isLiked;
         _likesController.likes.value = openFeedModel.likes;
+        if (prefs.getString("userId") == openFeedModel.userId) {
+          allowEdit.value = true;
+        }
+
         update();
       } else if (value.body['message'] == 'User unauthorized') {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString("token", "");
         Get.offNamed('/loginView');
       }

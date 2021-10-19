@@ -102,7 +102,7 @@ class _CreatePostState extends State<CreatePost> {
                                       color: createPostController
                                               .titleFocusNode.value
                                           ? AppColors.black
-                                          : AppColors.white,
+                                          : AppColors.black,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500),
                                   keyboardAppearance: Brightness.light,
@@ -113,13 +113,13 @@ class _CreatePostState extends State<CreatePost> {
                                     fillColor: createPostController
                                             .titleFocusNode.value
                                         ? AppColors.white
-                                        : AppColors.white,
+                                        : AppColors.black,
                                     errorMaxLines: 5,
                                     contentPadding: EdgeInsets.symmetric(
                                         vertical: 5.0, horizontal: 10.0),
                                     labelText: 'Title',
                                     labelStyle: TextStyle(
-                                      color: AppColors.white,
+                                      color: AppColors.black,
                                       fontWeight: FontWeight.w400,
                                       fontSize: 14.0,
                                     ),
@@ -163,7 +163,7 @@ class _CreatePostState extends State<CreatePost> {
                                       color: createPostController
                                               .descFocusNode.value
                                           ? AppColors.black
-                                          : AppColors.white,
+                                          : AppColors.black,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500),
                                   keyboardAppearance: Brightness.light,
@@ -181,7 +181,7 @@ class _CreatePostState extends State<CreatePost> {
                                         vertical: 5.0, horizontal: 10.0),
                                     labelText: 'Description',
                                     labelStyle: TextStyle(
-                                      color: AppColors.white,
+                                      color: AppColors.black,
                                       fontWeight: FontWeight.w400,
                                       fontSize: 14.0,
                                     ),

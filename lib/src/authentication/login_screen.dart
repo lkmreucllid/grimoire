@@ -88,7 +88,11 @@ class LoginScreen extends StatelessWidget {
                                         keyboardAppearance: Brightness.light,
                                         textInputAction: TextInputAction.done,
                                         style: TextStyle(
-                                            color: AppColors.black,
+                                            color: loginController
+                                                        .emailFocusNode.value ==
+                                                    true
+                                                ? AppColors.black
+                                                : AppColors.white,
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500),
                                         controller:
@@ -145,7 +149,12 @@ class LoginScreen extends StatelessWidget {
                                         keyboardAppearance: Brightness.light,
                                         textInputAction: TextInputAction.done,
                                         style: TextStyle(
-                                            color: AppColors.black,
+                                            color: loginController
+                                                        .passwordFocusNode
+                                                        .value ==
+                                                    true
+                                                ? AppColors.black
+                                                : AppColors.white,
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500),
                                         controller: loginController

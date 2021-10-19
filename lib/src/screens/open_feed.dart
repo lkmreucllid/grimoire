@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_medium/src/controller/bookmarks_controller.dart';
 import 'package:flutter_medium/src/controller/likes_controller.dart';
 import 'package:flutter_medium/src/controller/open_feed_controller.dart';
+import 'package:flutter_medium/src/screens/update_feed.dart';
 import 'package:flutter_medium/src/utils/app_colors.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -128,6 +129,36 @@ class _OpenFeedState extends State<OpenFeed> {
                               ),
                             ),
                           ),
+                          _openFeedController.allowEdit.value == true
+                              ? Column(
+                                  children: [
+                                    SizedBox(height: 10.0),
+                                    InkWell(
+                                      onTap: () {
+                                        Get.to(UpdatePost(
+                                          feedId: widget.feedId,
+                                        ));
+                                      },
+                                      child: Container(
+                                        height: 55,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        padding: EdgeInsets.all(5.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text('Edit'),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : SizedBox(),
                           SizedBox(height: 10.0),
                           Container(
                             decoration: BoxDecoration(

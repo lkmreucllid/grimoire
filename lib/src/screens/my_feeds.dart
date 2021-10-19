@@ -18,16 +18,10 @@ class _MyFeedsState extends State<MyFeeds> {
   final FeedListController _feedListController = Get.put(FeedListController());
   final SelectedCategoryController _selectedCategoryController =
       Get.put(SelectedCategoryController());
-  //final OpenFeedController _openFeedController = Get.put(OpenFeedController());
   var formattedDate;
-  // void openCurrentFeed() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   _openFeedController.apiGetFeed(prefs.getString("currentlyReading"));
-  // }
 
   @override
   Widget build(BuildContext context) {
-    //openCurrentFeed();
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -97,7 +91,7 @@ class _MyFeedsState extends State<MyFeeds> {
                     ),
                     // Selected Feeds are shown in row Here.
                     Container(
-                      width: Get.size.width,
+                      width: Get.width,
                       height: 90,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
@@ -119,7 +113,7 @@ class _MyFeedsState extends State<MyFeeds> {
                                   children: [
                                     Container(
                                       height: 150,
-                                      width: Get.size.width,
+                                      width: Get.width,
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
                                         itemCount: _selectedCategoryController
@@ -461,8 +455,7 @@ class _MyFeedsState extends State<MyFeeds> {
                             ],
                           ),
                         ),
-                        Positioned(
-                          right: Get.width / 2,
+                        Container(
                           child: FloatingActionButton(
                             backgroundColor: Colors.white,
                             onPressed: () {

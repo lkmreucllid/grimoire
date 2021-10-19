@@ -72,7 +72,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       keyboardAppearance: Brightness.light,
                                       textInputAction: TextInputAction.done,
                                       style: TextStyle(
-                                          color: AppColors.black,
+                                          color: _signUpController
+                                                      .nameFocusNode.value ==
+                                                  true
+                                              ? AppColors.black
+                                              : AppColors.white,
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500),
                                       controller:
@@ -124,7 +128,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       keyboardAppearance: Brightness.light,
                                       textInputAction: TextInputAction.done,
                                       style: TextStyle(
-                                          color: AppColors.black,
+                                          color: _signUpController
+                                                      .emailFocusNode.value ==
+                                                  true
+                                              ? AppColors.black
+                                              : AppColors.white,
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500),
                                       controller:
@@ -180,7 +188,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       keyboardAppearance: Brightness.light,
                                       textInputAction: TextInputAction.done,
                                       style: TextStyle(
-                                          color: AppColors.black,
+                                          color: _signUpController
+                                                      .passwordFocusNode
+                                                      .value ==
+                                                  true
+                                              ? AppColors.black
+                                              : AppColors.white,
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500),
                                       controller: _signUpController
@@ -250,7 +263,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       keyboardAppearance: Brightness.light,
                                       textInputAction: TextInputAction.done,
                                       style: TextStyle(
-                                          color: AppColors.black,
+                                          color: _signUpController
+                                                      .confirmPasswordFocusNode
+                                                      .value ==
+                                                  true
+                                              ? AppColors.black
+                                              : AppColors.white,
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500),
                                       controller: _signUpController
@@ -318,7 +336,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       keyboardAppearance: Brightness.light,
                                       textInputAction: TextInputAction.done,
                                       style: TextStyle(
-                                          color: AppColors.black,
+                                          color: _signUpController
+                                                      .contactFocusNode.value ==
+                                                  true
+                                              ? AppColors.black
+                                              : AppColors.white,
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500),
                                       controller: _signUpController
@@ -393,7 +415,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       keyboardAppearance: Brightness.light,
                                       textInputAction: TextInputAction.done,
                                       style: TextStyle(
-                                          color: AppColors.black,
+                                          color: _signUpController
+                                                      .addressFocusNode.value ==
+                                                  true
+                                              ? AppColors.black
+                                              : AppColors.white,
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500),
                                       controller: _signUpController
