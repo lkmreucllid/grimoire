@@ -169,38 +169,41 @@ class _OpenFeedState extends State<OpenFeed> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                GetBuilder<LikesController>(
-                                    init: LikesController(),
-                                    builder: (value) =>
-                                        _likesController.isLiked.value == true
-                                            ? Container(
-                                                child: IconButton(
-                                                  onPressed: () {
-                                                    _likesController.unLikePost(
-                                                        _openFeedController
-                                                            .openFeedModel
-                                                            .feedId);
-                                                  },
-                                                  icon: Icon(
-                                                    Icons.favorite,
-                                                    color: Colors.red,
-                                                  ),
-                                                ),
-                                              )
-                                            : Container(
-                                                child: IconButton(
-                                                  onPressed: () {
-                                                    _likesController.likePost(
-                                                        _openFeedController
-                                                            .openFeedModel
-                                                            .feedId);
-                                                  },
-                                                  icon: Icon(
-                                                    Icons.favorite_border,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              )),
+                                _openFeedController.allowEdit.value == false
+                                    ? GetBuilder<LikesController>(
+                                        init: LikesController(),
+                                        builder: (value) =>
+                                            _likesController.isLiked.value ==
+                                                    true
+                                                ? Container(
+                                                    child: IconButton(
+                                                      onPressed: () {
+                                                        _likesController.unLikePost(
+                                                            _openFeedController
+                                                                .openFeedModel
+                                                                .feedId);
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.favorite,
+                                                        color: Colors.red,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Container(
+                                                    child: IconButton(
+                                                      onPressed: () {
+                                                        _likesController.likePost(
+                                                            _openFeedController
+                                                                .openFeedModel
+                                                                .feedId);
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.favorite_border,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  ))
+                                    : SizedBox(),
                                 GetBuilder<LikesController>(
                                   init: LikesController(),
                                   builder: (value) => Text(

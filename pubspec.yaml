@@ -36,6 +36,9 @@ dependencies:
   rxdart: ^0.27.1
   string_extensions: ^0.3.0
   flutter_launcher_icons: ^0.9.1
+  firebase_messaging: ^10.0.5
+  flutter_local_notifications: any
+  firebase_core: ^1.5.0
 
 dev_dependencies:
   flutter_test:

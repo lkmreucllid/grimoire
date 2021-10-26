@@ -36,15 +36,39 @@ class _MyFeedsState extends State<MyFeeds> {
                     SizedBox(
                       height: 15,
                     ),
-                    Text(
-                      "My Feeds",
-                      style: Theme.of(context).textTheme.headline1,
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 5,
+                          child: Text(
+                            "My Feeds",
+                            style: Theme.of(context).textTheme.headline1,
+                          ),
+                        ),
+                        SizedBox(width: 10.0),
+                        InkWell(
+                          onTap: () => Get.toNamed('/userProfile'),
+                          child: Container(
+                            width: Get.width * 0.10,
+                            height: Get.width * 0.10,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                  image: AssetImage("assets/male.jpg"),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     //Search and Profile image Row
-                    Row(
+                    /* Row(
                       children: [
                         Expanded(
                           flex: 5,
@@ -88,7 +112,7 @@ class _MyFeedsState extends State<MyFeeds> {
                     ),
                     SizedBox(
                       height: 10.0,
-                    ),
+                    ),*/
                     // Selected Feeds are shown in row Here.
                     Container(
                       width: Get.width,
@@ -225,7 +249,7 @@ class _MyFeedsState extends State<MyFeeds> {
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 width: Get.width,
-                                height: Get.height * 0.60,
+                                height: Get.height * 0.65,
                                 child: Container(
                                   child: Column(
                                     crossAxisAlignment:

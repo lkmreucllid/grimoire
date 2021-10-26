@@ -10,4 +10,5 @@ class AppColors {
   static const purpleColor = Color(0xff793EE8);
   static const eggPlant = Color(0xFF383443);
   static const mustardColor = Color(0xFF8F6239);
+  static const notificationColor = Color(0xFF00DD76);
 }

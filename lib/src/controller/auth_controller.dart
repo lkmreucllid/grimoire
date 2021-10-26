@@ -22,12 +22,13 @@ class AuthController extends GetxController {
     authProvider
         .checkLogin("https://my-medium-app.herokuapp.com/user")
         .then((value) {
-      if (value.body['sucess'] == false) {
+      if (value.isBlank == false && value.body["sucess"] == true) {
+        Get.offNamed('/feedsView');
+      } else {
         isLoadingAuth.value = false;
+        logout();
         Get.offNamed('/loginView');
         update();
-      } else {
-        Get.offNamed('/feedsView');
       }
     });
   }

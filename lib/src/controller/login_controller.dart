@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_medium/src/provider/user_provider.dart';
 import 'package:flutter_medium/src/screens/my_feeds.dart';
@@ -9,14 +10,28 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LoginController extends GetxController {
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
+  FirebaseMessaging _firebaseMessaging;
+
   RxBool emailFocusNode = false.obs;
   RxBool passwordFocusNode = false.obs;
   RxBool obscureText = true.obs;
-  String accessToken, userId, name, email, contact, gender, country, address;
+  String accessToken,
+      userId,
+      name,
+      email,
+      contact,
+      gender,
+      country,
+      address,
+      deviceToken;
 
   @override
   void onInit() {
     super.onInit();
+    _firebaseMessaging = FirebaseMessaging.instance;
+    _firebaseMessaging.getToken().then((value) {
+      deviceToken = value.toString();
+    });
   }
 
   @override
@@ -80,8 +95,10 @@ class LoginController extends GetxController {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       Map _data = {
         "email": emailTextController.text,
-        "password": passwordTextController.text
+        "password": passwordTextController.text,
+        "deviceToken": deviceToken
       };
+      print(_data);
 
       Get.dialog(Center(child: CircularProgressIndicator()),
           barrierDismissible: false);
@@ -110,6 +127,7 @@ class LoginController extends GetxController {
             prefs.setString("address", address);
             prefs.setString("country", country);
             prefs.setString("gender", gender);
+
             emailTextController.clear();
             passwordTextController.clear();
             Get.offAll(() => MyFeeds());

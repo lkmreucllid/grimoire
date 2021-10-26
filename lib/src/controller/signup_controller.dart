@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_medium/src/provider/user_provider.dart';
 import 'package:flutter_medium/src/screens/my_feeds.dart';
@@ -13,6 +14,7 @@ class SignUpController extends GetxController {
   TextEditingController confirmPasswordTextController = TextEditingController();
   TextEditingController contactTextController = TextEditingController();
   TextEditingController addressTextController = TextEditingController();
+  FirebaseMessaging _firebaseMessaging;
 
   RxBool nameFocusNode = false.obs;
   RxBool countryFocusNode = false.obs;
@@ -31,13 +33,18 @@ class SignUpController extends GetxController {
       contact,
       address,
       countryStr,
-      genderStr;
+      genderStr,
+      deviceToken;
   RxString gender = "Male".obs;
   RxString country = "India".obs;
 
   @override
   void onInit() {
     super.onInit();
+    _firebaseMessaging = FirebaseMessaging.instance;
+    _firebaseMessaging.getToken().then((value) {
+      deviceToken = value.toString();
+    });
   }
 
   @override
@@ -146,8 +153,10 @@ class SignUpController extends GetxController {
         "password": passwordTextController.text,
         "contact": contactTextController.text,
         "gender": gender.value.toString().toUpperCase(),
-        "email": emailTextController.text
+        "email": emailTextController.text,
+        "deviceToken": deviceToken
       };
+      print(_data);
 
       Get.dialog(Center(child: CircularProgressIndicator()),
           barrierDismissible: false);
